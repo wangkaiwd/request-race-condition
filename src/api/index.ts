@@ -1,3 +1,5 @@
+// import axios from 'axios'
+
 export type OperationType = 'a' | 'b'
 
 export const service = (type: OperationType): Promise<string> => {
@@ -8,24 +10,44 @@ export const service = (type: OperationType): Promise<string> => {
   })
 }
 
-export const fetchDataCreator = () => {
-  const cancel: any = {
-    current: null,
+const fetcherCreator = (api: (...args: any[]) => Promise<any>) => {
+  const canceller: any = {
+    cancel: null,
   }
-  const run = (type: OperationType): Promise<string> => {
+
+  const run = (...args: any[]): Promise<any> => {
     return new Promise((resolve, reject) => {
-      cancel.current = () => {
-        console.log('cancel promise')
+      api(...args).then((res) => {
+        resolve(res)
+        canceller.cancel = null
+      }).catch((error) => {
+        reject(error)
+        canceller.cancel = null
+      })
+      canceller.cancel = () => {
         reject('cancel')
-        cancel.current = null
+        canceller.cancel = null
       }
-      setTimeout(() => {
-        resolve(type)
-      }, type === 'a' ? 4000 : 2000)
     })
   }
+
   return {
     run,
-    cancel,
+    canceller,
   }
 }
+
+export const fetchData = fetcherCreator(service)
+
+// const createAxiosFetcher = () => {
+//   const controller = new AbortController()
+//   const run = () => {
+//     return axios.get('/foo/bar', {
+//       signal: controller.signal,
+//     })
+//   }
+//   return {
+//     run,
+//     canceller: controller,
+//   }
+// }
