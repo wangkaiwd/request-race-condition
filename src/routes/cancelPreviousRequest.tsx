@@ -1,17 +1,18 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Button, Card } from 'antd'
-import { type OperationType, fetchDataInfo } from '../api'
+import { type OperationType, fetchDataCreator } from '../api'
+
+const { run: fetchData, cancel: cancelFetchData } = fetchDataCreator()
 
 const CancelPreviousRequest = () => {
   const [data, setData] = useState('')
 
   const getData = async (type: OperationType) => {
-    const { run, cancel } = fetchDataInfo()
-    if (cancel) {
-      cancel()
+    if (cancelFetchData.current) {
+      cancelFetchData.current()
     }
-    const newData = await run(type)
+    const newData = await fetchData(type)
     setData(newData)
   }
 

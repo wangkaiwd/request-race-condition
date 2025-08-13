@@ -8,16 +8,19 @@ export const service = (type: OperationType): Promise<string> => {
   })
 }
 
-export const fetchDataInfo = () => {
-  let cancel: any = null
+export const fetchDataCreator = () => {
+  const cancel: any = {
+    current: null,
+  }
   const run = (type: OperationType): Promise<string> => {
     return new Promise((resolve, reject) => {
+      cancel.current = () => {
+        console.log('cancel promise')
+        reject('cancel')
+        cancel.current = null
+      }
       setTimeout(() => {
         resolve(type)
-        cancel = () => {
-          reject('cancel')
-          cancel = null
-        }
       }, type === 'a' ? 4000 : 2000)
     })
   }
