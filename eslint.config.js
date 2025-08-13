@@ -20,5 +20,8 @@ export default tseslint.config([
       globals: globals.browser,
     },
     ignores: ['src/routeTree.gen.ts'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
   },
 ])
