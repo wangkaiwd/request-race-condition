@@ -5,13 +5,13 @@ import { Button, Card } from 'antd'
 
 const DiscardPreviousRequest = () => {
   const [data, setData] = useState('')
-  const countRef = useRef(0)
+  const reqIdRef = useRef(0)
 
   const getData = async (type: OperationType) => {
-    countRef.current++
-    const currentCount = countRef.current
+    reqIdRef.current++
+    const currentReqId = reqIdRef.current
     const newData = await service(type)
-    if (currentCount === countRef.current) {
+    if (currentReqId === reqIdRef.current) {
       setData(newData)
     }
   }
