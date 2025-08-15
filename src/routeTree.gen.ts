@@ -14,6 +14,7 @@ import { Route as RaceConditionRouteImport } from './routes/raceCondition'
 import { Route as DiscardPreviousRequestRouteImport } from './routes/discardPreviousRequest'
 import { Route as CancelPreviousRequestRouteImport } from './routes/cancelPreviousRequest'
 import { Route as CancelPreviousPromiseRouteImport } from './routes/cancelPreviousPromise'
+import { Route as IndexRouteImport } from './routes/index'
 
 const UseRequestRoute = UseRequestRouteImport.update({
   id: '/useRequest',
@@ -40,8 +41,14 @@ const CancelPreviousPromiseRoute = CancelPreviousPromiseRouteImport.update({
   path: '/cancelPreviousPromise',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/cancelPreviousPromise': typeof CancelPreviousPromiseRoute
   '/cancelPreviousRequest': typeof CancelPreviousRequestRoute
   '/discardPreviousRequest': typeof DiscardPreviousRequestRoute
@@ -49,6 +56,7 @@ export interface FileRoutesByFullPath {
   '/useRequest': typeof UseRequestRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/cancelPreviousPromise': typeof CancelPreviousPromiseRoute
   '/cancelPreviousRequest': typeof CancelPreviousRequestRoute
   '/discardPreviousRequest': typeof DiscardPreviousRequestRoute
@@ -57,6 +65,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/cancelPreviousPromise': typeof CancelPreviousPromiseRoute
   '/cancelPreviousRequest': typeof CancelPreviousRequestRoute
   '/discardPreviousRequest': typeof DiscardPreviousRequestRoute
@@ -66,6 +75,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/cancelPreviousPromise'
     | '/cancelPreviousRequest'
     | '/discardPreviousRequest'
@@ -73,6 +83,7 @@ export interface FileRouteTypes {
     | '/useRequest'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/cancelPreviousPromise'
     | '/cancelPreviousRequest'
     | '/discardPreviousRequest'
@@ -80,6 +91,7 @@ export interface FileRouteTypes {
     | '/useRequest'
   id:
     | '__root__'
+    | '/'
     | '/cancelPreviousPromise'
     | '/cancelPreviousRequest'
     | '/discardPreviousRequest'
@@ -88,6 +100,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   CancelPreviousPromiseRoute: typeof CancelPreviousPromiseRoute
   CancelPreviousRequestRoute: typeof CancelPreviousRequestRoute
   DiscardPreviousRequestRoute: typeof DiscardPreviousRequestRoute
@@ -132,10 +145,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CancelPreviousPromiseRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   CancelPreviousPromiseRoute: CancelPreviousPromiseRoute,
   CancelPreviousRequestRoute: CancelPreviousRequestRoute,
   DiscardPreviousRequestRoute: DiscardPreviousRequestRoute,
