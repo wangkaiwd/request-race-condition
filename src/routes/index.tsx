@@ -8,6 +8,7 @@ interface ExampleItem {
   title: string
   path: string
   description: string
+  filePath: string
 }
 
 const examples: ExampleItem[] = [
@@ -15,26 +16,31 @@ const examples: ExampleItem[] = [
     title: '竞态示例',
     path: '/raceCondition',
     description: '展示请求竞态问题的基本情况',
+    filePath: 'src/routes/raceCondition.tsx',
   },
   {
     title: '丢弃之前请求结果',
     path: '/discardPreviousRequest',
     description: '通过标记请求ID，丢弃旧请求的结果，保留最新请求',
+    filePath: 'src/routes/discardPreviousRequest.tsx',
   },
   {
     title: '取消之前请求',
     path: '/cancelPreviousRequest',
     description: '使用AbortController取消之前的请求，减少不必要的网络开销',
+    filePath: 'src/routes/cancelPreviousRequest.tsx',
   },
   {
     title: '取消之前Promise',
     path: '/cancelPreviousPromise',
     description: '自定义Promise取消机制，在更底层处理请求竞态',
+    filePath: 'src/routes/cancelPreviousPromise.tsx',
   },
   {
     title: 'useRequest Hook',
     path: '/useRequest',
     description: '使用ahooks的useRequest优雅处理竞态问题，简化代码',
+    filePath: 'src/routes/useRequest.tsx',
   },
 ]
 
@@ -89,6 +95,11 @@ const HomePage = () => {
                     <Paragraph style={{ color: '#666', margin: 0 }}>
                       {item.description}
                     </Paragraph>
+                    <Text type="secondary" style={{ fontSize: '13px', display: 'block', marginTop: '8px' }}>
+                      <code style={{ backgroundColor: '#f5f5f5', padding: '2px 6px', borderRadius: '3px' }}>
+                        {item.filePath}
+                      </code>
+                    </Text>
                   </div>
                   <Link 
                     to={item.path}
