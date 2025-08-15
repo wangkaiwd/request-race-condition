@@ -16,8 +16,11 @@ export const fetchDataCreator = () => {
   }
   const run = (type: OperationType): Promise<string> => {
     return new Promise((resolve, reject) => {
-      canceller.cancel = () => {
-        reject('cancel')
+      canceller.cancel = (reason: any) => {
+        reject({
+          reason,
+          name: 'cancel',
+        })
         canceller.cancel = null
       }
       setTimeout(() => {
@@ -33,10 +36,7 @@ export const fetchDataCreator = () => {
 
 export const fetchData = fetchDataCreator()
 
-const controller = new AbortController()
-axios.get(' https://cnodejs.org/api/v1/topics', { signal: controller.signal }).then((res) => {
-  console.log('res', res)
-}, (reason) => {
-  console.log('reason', reason)
-})
-controller.abort('manually abort!')
+// https://cnodejs.org/api
+export const fetchTopics = (config: any) => {
+  return axios.get('https://cnodejs.org/api/v1/topics', config)
+}
