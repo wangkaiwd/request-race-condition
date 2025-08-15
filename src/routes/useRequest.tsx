@@ -9,6 +9,7 @@ export const Route = createFileRoute('/useRequest')({
 })
 
 function UseRequest () {
+  // useRequest 帮我们处理了竞态问题
   const { runAsync } = useRequest(service)
   const [content, setContent] = useState<null | string>(null)
   const onClick = async (type: OperationType) => {
@@ -16,7 +17,7 @@ function UseRequest () {
     setContent(res)
   }
   return (
-    <div className="p-2">
+    <div>
       <Button onClick={() => onClick('a')}>A</Button>
       <Button onClick={() => onClick('b')}>B</Button>
       <Card title={'内容'}>
